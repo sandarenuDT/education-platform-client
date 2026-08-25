@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f6fc;
+  --foreground: #17152b;
+
+  /* Brand — violet, matching the reference UI kit + institute site */
+  --color-brand-50: #f3f1ff;
+  --color-brand-100: #e7e3ff;
+  --color-brand-200: #cec5ff;
+  --color-brand-300: #ab9aff;
+  --color-brand-400: #8a72fb;
+  --color-brand-500: #6d4aff;
+  --color-brand-600: #5a35f0;
+  --color-brand-700: #4926c9;
+  --color-brand-800: #3a1f9e;
+  --color-brand-900: #241457;
+
+  /* Ink — near-black used for sidebars / headers */
+  --color-ink-900: #14121f;
+  --color-ink-800: #201d33;
+  --color-ink-700: #2c2846;
+
+  /* Surface neutrals */
+  --color-surface-0: #ffffff;
+  --color-surface-50: #f7f6fc;
+  --color-surface-100: #eeecf7;
+  --color-surface-200: #dedbf0;
+  --color-surface-muted: #6b6884;
+
+  /* Status / accent set (mirrors course-card colors in the reference kit) */
+  --color-accent-teal: #14b88a;
+  --color-accent-orange: #f5a524;
+  --color-accent-pink: #ff6392;
+  --color-accent-green: #16a34a;
+  --color-accent-red: #ef4444;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+
+  --color-ink-900: var(--color-ink-900);
+  --color-ink-800: var(--color-ink-800);
+  --color-ink-700: var(--color-ink-700);
+
+  --color-surface-0: var(--color-surface-0);
+  --color-surface-50: var(--color-surface-50);
+  --color-surface-100: var(--color-surface-100);
+  --color-surface-200: var(--color-surface-200);
+  --color-surface-muted: var(--color-surface-muted);
+
+  --color-accent-teal: var(--color-accent-teal);
+  --color-accent-orange: var(--color-accent-orange);
+  --color-accent-pink: var(--color-accent-pink);
+  --color-accent-green: var(--color-accent-green);
+  --color-accent-red: var(--color-accent-red);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans, ui-sans-serif), system-ui, sans-serif;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
