@@ -1,8 +1,61 @@
+"use client";
+
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { api, ApiError } from "@/lib/api";
+import { AUTH_LOGIN } from "@/lib/apiPaths";
+import type { Role } from "@/types";
+
+interface LoginResponse {
+  token: string;
+  role: Role;
+}
+
+const roleHome: Record<Role, string> = {
+  STUDENT: "/dashboard",
+  TEACHER_ADMIN: "/teacher",
+  SUPER_ADMIN: "/admin",
+};
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const { token, role } = await api.post<LoginResponse>(AUTH_LOGIN, {
+        email,
+        password,
+      });
+      document.cookie = `edex_token=${token}; path=/; max-age=86400`;
+      router.push(roleHome[role] ?? "/");
+      router.refresh();
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setError(
+          err.status === 401 || err.status === 403
+            ? "Incorrect email or password."
+            : `Login failed (${err.status}). Please try again.`
+        );
+      } else {
+        setError(
+          "Couldn't reach the server. Is the backend running and NEXT_PUBLIC_API_BASE_URL set correctly?"
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="grid w-full max-w-4xl overflow-hidden rounded-3xl border border-surface-200 bg-surface-0 shadow-sm md:grid-cols-2">
       {/* Side panel */}
@@ -29,13 +82,22 @@ export default function LoginPage() {
           Login to your account
         </p>
 
-        <form className="mt-8 space-y-5">
+        {error && (
+          <div className="mt-6 rounded-xl border border-accent-red/20 bg-accent-red/10 px-4 py-3 text-sm text-accent-red">
+            {error}
+          </div>
+        )}
+
+        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
           <div>
             <label className="mb-1.5 block text-sm font-medium text-ink-900">
               Email address
             </label>
             <input
               type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               className="w-full rounded-xl border border-surface-200 px-4 py-2.5 text-sm outline-none placeholder:text-surface-muted focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
             />
@@ -55,32 +117,18 @@ export default function LoginPage() {
             </div>
             <input
               type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               className="w-full rounded-xl border border-surface-200 px-4 py-2.5 text-sm outline-none placeholder:text-surface-muted focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
             />
           </div>
 
-          <Button type="submit" className="w-full" size="lg">
-            Login
+          <Button type="submit" className="w-full" size="lg" disabled={loading}>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Login"}
           </Button>
         </form>
-
-        <div className="my-6 flex items-center gap-3 text-xs text-surface-muted">
-          <span className="h-px flex-1 bg-surface-200" />
-          or continue with
-          <span className="h-px flex-1 bg-surface-200" />
-        </div>
-
-        <div className="grid grid-cols-3 gap-3">
-          {["Google", "Facebook", "Apple"].map((provider) => (
-            <button
-              key={provider}
-              className="rounded-xl border border-surface-200 py-2.5 text-xs font-medium text-surface-muted hover:bg-surface-100"
-            >
-              {provider}
-            </button>
-          ))}
-        </div>
 
         <p className="mt-8 text-center text-sm text-surface-muted">
           Don&apos;t have an account?{" "}
