@@ -5,9 +5,9 @@ import { ClassesOffered } from "@/components/home/ClassesOffered";
 import { ImageSlider } from "@/components/home/ImageSlider";
 
 const heroSlides = [
-  { src: "/images/institute.png", alt: "EDEX students in class", caption: "Knowledge Talk Matters" },
-  { src: "/images/teacher.png", alt: "EDEX live online lecture", caption: "Learn Anytime, Anywhere" },
-  { src: "/images/image.png", alt: "EDEX exam success", caption: "Results That Speak" },
+  { src: "/images/hero/institute.png", alt: "EDEX students in class", caption: "Knowledge Talk Matters" },
+  { src: "/images/hero/teacher.png", alt: "EDEX live online lecture", caption: "Learn Anytime, Anywhere" },
+  { src: "/images/hero/image.png", alt: "EDEX exam success", caption: "Results That Speak" },
 ];
 
 const stats = [
@@ -87,8 +87,8 @@ export default function HomePage() {
           {/* Card Frame */}
           <div className="overflow-hidden rounded-xl bg-white shadow-lg border border-slate-100">
             <img
-              src="/path-to-your-syzygy-image.jpg"
-              alt="Students outside SyZyGy institute"
+              src="/images/institute/around the institute.png"
+              alt="Students outside EDEX institute"
               className="h-auto w-full object-cover"
             />
           </div>

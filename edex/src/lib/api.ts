@@ -2,9 +2,9 @@
  * Client for the EDEX Spring Boot backend.
  * Set NEXT_PUBLIC_API_BASE_URL in .env.local, e.g.
  *   NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api
- */
+ */1
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api";
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8081/api";
 
 export class ApiError extends Error {
   status: number;
@@ -30,7 +30,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
       ...headers,
     },
     // Spring Session/JWT cookie support if you're using cookie-based auth instead:
-    credentials: "include",
+    // credentials: "include",
   });
 
   if (!res.ok) {
